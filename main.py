@@ -1,5 +1,5 @@
-#if letter is X: correct letter, correct place
-
+#INSTRUCTIONS
+# if letter is X: correct letter, correct place
 #if letter is 'x': correct letter, wrong place 
 
 import json
@@ -24,36 +24,48 @@ def chooseWord(possibleWords):
 def game(answer):
     print(answer)
     sum = 0
-    for i in range(0,5):
-        print("instructions:\n -capital letter means correct letter at correct place \n -characters in single quotation marks mean correct letter at the wrong place \n -lowercase letters mean wrong letters at the wrong place")
-        guess = input("please enter a five letter word: ")
-        for i in range (0, 5):
-            sum += 1
-            if answer.lower() == guess.lower():
-                print("YAY you got this")
-                break
-            if sum == 5: 
-                if answer.lower() != guess.lower():
-                    print("OH NO its okay!")
-            guess = list(guess)
-            answer = list(answer)
-            #correct word, correct place
-            if answer[i]== guess[i]:
-                guess[i] = guess[i].upper()
-            #correct word, wrong place
-            elif guess[i] in answer:
-                str(guess[i])
-                guess[i] = "'" + guess[i] + "'"
-            
-        print(*guess, sep = " ")
+    rounds = 0
+    print("instructions: ")
+    print("- capital letter means correct letter at correct place")
+    print("- characters in single quotation marks mean correct letter at the wrong place")
+    print("- lowercase letters mean wrong letters at the wrong place")      
+    while rounds < 5:
+        answer = str(answer)
+        guess = input("please enter a five letter guess: ")
+        #if the guess is not 5 letters long 
+        while (len(guess) != 5):
+            guess = input("incorrect number of letters. Please try again: ")  
+        #if the guess is correct 
+        if guess.lower() == answer.lower():
+            print(guess.upper())
+            print("YAY you win!")
+            break
+        #if the player is not able to get the correct word after 5 rounds
+        if rounds == 4 and guess.lower() != answer.lower():
+            print(list(guess))
+            print("OH NO youre out of guesses :( ")
+            break
+        #correct letter, wrong place
+        answer = list(answer)
+        guess = list(guess)
+        for letter in guess:
+            for alphabet in answer:
+                if letter == alphabet:
+                    letter = letter + "+"
 
-    
-
+        """
+        for letter in guess: 
+            if letter in answer:
+                letter = "+" + letter + "+"
+        """
+        
+        #correct letter, correct place
+        if guess[rounds] == answer[rounds]:
+            guess[rounds] = guess[rounds].upper()
+        
+        print(guess)
+        rounds+=1 
+        
 possibleWords = fiveLetterWords()
 word = chooseWord(possibleWords)
 game(word)
-
-
-
-
-
